@@ -20,7 +20,7 @@ function onFormSubmit(e) {
 
   showLoader();
 
-  const query = e.target.elements.query.value.trim(); //діставання значення input без пробілів
+  const query = e.target.elements.query.value.trim();
   if (!query) {
     showError();
     hideLoader();
@@ -29,34 +29,27 @@ function onFormSubmit(e) {
 
   fetchImages(query)
     .then(data => {
-      showLoader();
-
       hideLoader();
       if (data.hits.length === 0) {
-        showErrorMessenge();
-        hideLoader();
+        showErrorMessage();
       } else {
-        refs.GalleryEl.innerHTML = ''; //скидання розмітки після submit, але до рендеру
+        refs.GalleryEl.innerHTML = '';
         renderHits(data.hits);
       }
     })
     .catch(error => {
-      showLoader();
-
       showError(error);
       hideLoader();
-
-      refs.GalleryEl.innerHTML = ''; //скидання розмітки після
+      refs.GalleryEl.innerHTML = '';
     })
-
     .finally(() => {
-      e.target.reset(); //очистка форми
+      e.target.reset();
     });
 }
-// =====================================================================
+
 function renderHits(hits) {
   const markup = templateImages(hits);
-  refs.GalleryEl.insertAdjacentHTML('beforeend', markup); // додає нову розмітку
+  refs.GalleryEl.insertAdjacentHTML('beforeend', markup);
 
   const lightbox = new SimpleLightbox('.gallery a', {
     captions: true,
@@ -72,19 +65,19 @@ function renderHits(hits) {
   lightbox.refresh();
 }
 
-function showError() {
+function showError(error) {
   iziToast.error({
-    message: 'Please enter a search query.',
+    message: error ? error.message : 'Please enter a search query.',
     position: 'topRight',
   });
 }
-function showErrorMessenge() {
+
+function showErrorMessage() {
   iziToast.error({
     backgroundColor: '#EF4040',
     position: 'topRight',
     maxWidth: 500,
-    message:
-      'Sorry, there are no images matching your search query. Please try again!',
+    message: 'Sorry, there are no images matching your search query. Please try again!',
   });
 }
 

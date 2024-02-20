@@ -1,5 +1,3 @@
-// ==========функція відправлення кур'єра на сервер===========
-
 export function fetchImages(query) {
   const BASE_URL = 'https://pixabay.com/api/';
   const searchParams = new URLSearchParams({
