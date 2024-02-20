@@ -13,6 +13,17 @@ const refs = {
   GalleryEl: document.querySelector('.gallery'),
 };
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionSelector: 'img',
+  captionType: 'attr',
+  captionsData: 'alt',
+  captionPosition: 'bottom',
+  animation: 250,
+  widthRatio: 0.8,
+  scaleImageToRatio: true,
+});
+
 refs.formEl.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(e) {
@@ -32,6 +43,7 @@ function onFormSubmit(e) {
       hideLoader();
       if (data.hits.length === 0) {
         showErrorMessage();
+        refs.GalleryEl.innerHTML = '';
       } else {
         refs.GalleryEl.innerHTML = '';
         renderHits(data.hits);
@@ -50,18 +62,6 @@ function onFormSubmit(e) {
 function renderHits(hits) {
   const markup = templateImages(hits);
   refs.GalleryEl.insertAdjacentHTML('beforeend', markup);
-
-  const lightbox = new SimpleLightbox('.gallery a', {
-    captions: true,
-    captionSelector: 'img',
-    captionType: 'attr',
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    animation: 250,
-    widthRatio: 0.8,
-    scaleImageToRatio: true,
-  });
-
   lightbox.refresh();
 }
 
